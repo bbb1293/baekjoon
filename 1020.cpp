@@ -43,7 +43,7 @@ int main() {
 
     init_dp();
 
-    long long cur_num = 0, times = 1, ret = -1, small_ret = 1e15;
+    long long cur_num = 0, times = 1, ret = -1;
     int cur_cnt = 0;
     for (int pos = 0; pos < n; pos++) {
         int cur = num[pos];
@@ -64,22 +64,13 @@ int main() {
             break;
         }
 
-        for (int i = 0; i <= cur; i++) {
-            if (line_cnt[i] <= cur_cnt) {
-                long long cand = dp[pos][cur_cnt - line_cnt[i]];
-                if (cand < ori_num) {
-                    small_ret = min(small_ret, cand + i * times - cur_num);
-                }
-            }
-        }
         times *= 10;
     }
 
-    if (ret != -1) {
-        printf("%lld", ret);
-    } else {
-        printf("%lld", times + small_ret);
+    if (ret == -1) {
+        ret = times + dp[n][cur_cnt] - ori_num;
     }
+    printf("%lld", ret);
 
     return 0;
 }
