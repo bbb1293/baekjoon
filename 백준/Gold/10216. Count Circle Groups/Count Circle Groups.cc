@@ -3,8 +3,7 @@
 using namespace std;
 
 int n;
-int x[3000], y[3000], r[3000], used[3000];
-vector<int> edges[3000];
+int x[3000], y[3000], r[3000], p[3000];
 
 bool connected(int i, int j) {
     int dist_2 = (x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]);
@@ -13,14 +12,18 @@ bool connected(int i, int j) {
     return dist_2 <= r_2;
 }
 
-void dfs(int cur) {
-    used[cur] = true;
-
-    for (auto v : edges[cur]) {
-        if (!used[v]) {
-            dfs(v);
-        }
+void init_p() {
+    for (int i = 0; i < n; i++) {
+        p[i] = i;
     }
+}
+
+int get_p(int cur) {
+    if (cur == p[cur]) {
+        return cur;
+    }
+
+    return p[cur] = get_p(p[cur]);
 }
 
 int main() {
@@ -30,28 +33,28 @@ int main() {
     scanf("%d", &t);
 
     while (t--) {
-        memset(used, 0, sizeof(used));
-
         scanf("%d", &n);
+
+        init_p();
 
         for (int i = 0; i < n; i++) {
             scanf("%d %d %d", &x[i], &y[i], &r[i]);
-            edges[i].clear();
         }
 
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (connected(i, j)) {
-                    edges[i].push_back(j);
-                    edges[j].push_back(i);
+                    int p_i = get_p(i);
+                    int p_j = get_p(j);
+
+                    p[p_i] = p_j;
                 }
             }
         }
 
         int ret = 0;
         for (int i = 0; i < n; i++) {
-            if (!used[i]) {
-                dfs(i);
+            if (get_p(i) == i) {
                 ret++;
             }
         }
