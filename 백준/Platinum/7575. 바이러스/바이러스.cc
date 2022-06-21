@@ -4,7 +4,8 @@ using namespace std;
 
 int n, k;
 int ori_len, cur_len;
-int ori[1000], cur[2001], cnt[1000], pi[2001];
+int ori[1000], cur[2001], pi[2001];
+bool impossible[1000];
 
 int main() {
     // freopen("input.txt", "r", stdin);
@@ -17,7 +18,7 @@ int main() {
     }
     n--;
 
-    for (int a = 0; a < n; a++) {
+    while (n--) {
         scanf("%d", &cur_len);
         for (int i = 0; i < cur_len; i++) {
             scanf("%d", &cur[i + k + 1]);
@@ -25,7 +26,11 @@ int main() {
         cur_len += (k + 1);
 
         for (int i = 0; i <= ori_len - k; i++) {
-            bool possible = false;
+            if (impossible[i]) {
+                continue;
+            }
+
+            impossible[i] = true;
 
             for (int j = 0; j < k; j++) {
                 cur[j] = ori[i + j];
@@ -45,9 +50,13 @@ int main() {
                 pi[pos] = j;
 
                 if (j == k) {
-                    possible = true;
+                    impossible[i] = false;
                     break;
                 }
+            }
+
+            if (!impossible[i]) {
+                continue;
             }
 
             for (int j = 0; j < k; j++) {
@@ -68,19 +77,15 @@ int main() {
                 pi[pos] = j;
 
                 if (j == k) {
-                    possible = true;
+                    impossible[i] = false;
                     break;
                 }
-            }
-
-            if (possible) {
-                cnt[i]++;
             }
         }
     }
 
-    for (int i = 0; i < ori_len; i++) {
-        if (cnt[i] == n) {
+    for (int i = 0; i < ori_len - k + 1; i++) {
+        if (!impossible[i]) {
             printf("YES");
             return 0;
         }
