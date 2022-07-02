@@ -9,8 +9,6 @@ struct Point {
 struct Slice {
     Point s, e;
     long long w;
-
-    bool operator<(Slice &a) { return w < a.w; }
 };
 
 const int MAXN = 2500;
@@ -45,10 +43,9 @@ int main() {
 
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
-        scanf("%lld %lld %lld %lld %lld", &s[i].s.x, &s[i].s.y, &s[i].e.x, &s[i].e.y,
-              &s[i].w);
+        scanf("%lld %lld %lld %lld %lld", &s[i].s.x, &s[i].s.y, &s[i].e.x,
+              &s[i].e.y, &s[i].w);
     }
-    sort(s, s + n);
 
     long long ret = 0;
     for (int i = 0; i < n; i++) {
@@ -56,7 +53,7 @@ int main() {
 
         for (int j = 0; j < i; j++) {
             if (cross(i, j)) {
-                ret += s[j].w;
+                ret += min(s[j].w, s[i].w);
             }
         }
     }
