@@ -11,36 +11,32 @@ bool check(string &cur) {
             return false;
         }
     }
-
     return true;
 }
 
-bool get_next(string &cur, int pos) {
+void get_next(string &cur, int pos) {
     if (pos == s_len) {
-        return true;
+        return;
     }
 
     cur[pos] = '0';
-    if (check(cur) && get_next(cur, pos + 1)) {
-        return true;
+    if (check(cur)) {
+        get_next(cur, pos + 1);
+        return;
     }
 
     cur[pos] = '1';
-    if (check(cur) && get_next(cur, pos + 1)) {
-        return true;
-    }
-
-    return false;
+    get_next(cur, pos + 1);
 }
 
 void solve(string &cur) {
-    string ret;
     string tmp = cur;
     for (int i = s_len - 1; i >= 0; i--) {
         if (tmp[i] == '0') {
             tmp[i] = '1';
 
-            if (check(tmp) && get_next(tmp, i + 1)) {
+            if (check(tmp)) {
+                get_next(tmp, i + 1);
                 cout << tmp;
                 return;
             }
