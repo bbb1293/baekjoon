@@ -5,8 +5,7 @@ using namespace std;
 const int MAXN = 2e5;
 int c, p, x, l;
 vector<int> edges[MAXN + 1];
-int deg[MAXN + 1], cur_deg[MAXN + 1];
-bool used[MAXN + 1];
+int deg[MAXN + 1];
 
 int main() {
     // freopen("input.txt", "r", stdin);
@@ -21,30 +20,32 @@ int main() {
         edges[v].push_back(u);
 
         deg[u]++;
-        cur_deg[u]++;
         deg[v]++;
-        cur_deg[v]++;
+    }
+
+    for (int i = 1; i <= c; i++) {
+        deg[i] = (deg[i] + 1) / 2;
     }
 
     queue<int> q;
     q.push(l);
-    used[l] = true;
+    deg[l] = -1;
 
     while (!q.empty()) {
         int cur = q.front();
         q.pop();
 
         for (auto v : edges[cur]) {
-            cur_deg[v]--;
+            deg[v]--;
 
-            if (!used[v] && cur_deg[v] <= deg[v] / 2) {
+            if (deg[v] == 0) {
+                deg[v] = -1;
                 q.push(v);
-                used[v] = true;
             }
         }
     }
 
-    if (used[x]) {
+    if (deg[x] <= 0) {
         printf("leave");
     } else {
         printf("stay");
