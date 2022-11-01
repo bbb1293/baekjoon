@@ -1,14 +1,14 @@
-# [Gold V] ABBC - 25381 
+# [Gold IV] ABBC - 25381 
 
 [문제 링크](https://www.acmicpc.net/problem/25381) 
 
 ### 성능 요약
 
-메모리: 3524 KB, 시간: 8 ms
+메모리: 3528 KB, 시간: 8 ms
 
 ### 분류
 
-그리디 알고리즘(greedy)
+자료 구조(data_structures), 그리디 알고리즘(greedy), 큐(queue)
 
 ### 문제 설명
 

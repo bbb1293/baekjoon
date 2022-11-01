@@ -10,31 +10,33 @@ int main() {
 
     scanf("%s", s);
 
-    int s_len = strlen(s);
     int ret = 0;
+    int n = strlen(s);
 
-    queue<int> b;
-    for (int i = 0; i < s_len; i++) {
-        if (s[i] == 'B') {
-            b.push(i);
-        } else if (s[i] == 'C') {
-            if (!b.empty()) {
+    queue<int> q[2];
+    for (int i = 0; i < n; i++) {
+        if (s[i] == 'A') {
+            q[0].push(i);
+        } else if (s[i] == 'B') {
+            q[1].push(i);
+        } else {
+            if (!q[1].empty()) {
+                q[1].pop();
                 ret++;
-                b.pop();
             }
         }
     }
 
-    for (int i = 0; i < s_len; i++) {
-        if (s[i] == 'A') {
-            if (!b.empty() && b.front() < i) {
-                b.pop();
-            }
+    while (!q[0].empty() && !q[1].empty()) {
+        while (!q[1].empty() &&
+               q[0].front() > q[1].front()) {
+            q[1].pop();
+        }
 
-            if (!b.empty()) {
-                ret++;
-                b.pop();
-            }
+        if (!q[1].empty()) {
+            q[0].pop();
+            q[1].pop();
+            ret++;
         }
     }
 
