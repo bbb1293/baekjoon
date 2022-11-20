@@ -4,26 +4,7 @@ using namespace std;
 
 const int MAXN = 1e5;
 int n, m, k, x;
-int fenwick[MAXN + 1];
-
-void update(int target) {
-    for (int i = target; i <= n; i = (i | (i + 1))) {
-        fenwick[i]++;
-    }
-}
-
-int get_sum(int to) {
-    int ret = 0;
-    for (int i = to; i >= 0; i = (i & (i + 1)) - 1) {
-        ret += fenwick[i];
-    }
-
-    return ret;
-}
-
-int get_query(int l, int r) {
-    return get_sum(r) - get_sum(l - 1);
-}
+int presum[MAXN + 1];
 
 int main() {
     // freopen("input.txt", "r", stdin);
@@ -36,15 +17,16 @@ int main() {
 
         x += add;
         if (x < k) {
-            update(i);
+            presum[i] = 1;
         }
+        presum[i] += presum[i - 1];
     }
 
     while (m--) {
         int l, r;
         scanf("%d %d", &l, &r);
 
-        printf("%d\n", get_query(l, r - 1));
+        printf("%d\n", presum[r - 1] - presum[l - 1]);
     }
 
     return 0;
