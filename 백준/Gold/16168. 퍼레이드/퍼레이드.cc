@@ -47,13 +47,6 @@ int main() {
         edges[v].push_back(u);
     }
 
-    for (int i = 1; i <= v; i++) {
-        if (!edges[i].size()) {
-            printf("NO");
-            return 0;
-        }
-    }
-
     visited[1] = true;
     if (dfs(1) == v && is_possible()) {
         printf("YES");
